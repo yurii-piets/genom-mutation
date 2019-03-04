@@ -3,8 +3,8 @@ from random import randint
 from src.const.cell import CellType
 from src.world.location import Location
 
-WORLD_WIDTH = 85
-WORLD_HEIGHT = 42
+WORLD_WIDTH = 66
+WORLD_HEIGHT = 33
 
 MAX_FOOD = 80
 MAX_POISON = 20
