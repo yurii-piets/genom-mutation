@@ -56,7 +56,7 @@ class Bot:
 
     def move(self, command):
         self.energy -= 1
-        direction = get_direction_vector(self.direction.value[0], command)
+        direction = get_direction_vector(self.direction.value, command)
         new_location = self.location.transform(direction)
         effect = self.perform_move(new_location)
         if effect != Effect.POISONED:
@@ -91,7 +91,7 @@ class Bot:
             return Effect.POISONED
 
     def peek(self, command):
-        direction = get_direction_vector(self.direction.value[0], command)
+        direction = get_direction_vector(self.direction.value, command)
         peek_location = self.location.transform(direction)
         if not is_in_range(peek_location):
             return
@@ -106,7 +106,7 @@ class Bot:
             self.genes.move_pointer(put_index)
 
     def lookup(self, command):
-        direction = get_direction_vector(self.direction.value[0], command)
+        direction = get_direction_vector(self.direction.value, command)
         new_location = self.location.transform(direction)
         new_location_obj = self.world.get(new_location)
         if new_location_obj == CellType.FOOD:

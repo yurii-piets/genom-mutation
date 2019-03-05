@@ -2,13 +2,13 @@ from enum import Enum
 
 
 class Direction(Enum):
-    N = 0,
-    NE = 1,
-    E = 2,
-    SE = 3,
-    S = 4,
-    SW = 5,
-    W = 6,
+    N = 0
+    NE = 1
+    E = 2
+    SE = 3
+    S = 4
+    SW = 5
+    W = 6
     NW = 7
 
 
@@ -25,5 +25,5 @@ def get_direction_vector(start, index):
 
 
 def get_direction(start, index):
-    final_index = (start.value[0] + index) % DIRECTIONS_COUNT
+    final_index = (start.value + index) % DIRECTIONS_COUNT
     return directions[final_index]

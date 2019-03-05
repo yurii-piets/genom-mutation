@@ -6,8 +6,8 @@ from src.world.location import Location
 WORLD_WIDTH = 66
 WORLD_HEIGHT = 33
 
-MAX_FOOD = 80
-MAX_POISON = 20
+MAX_FOOD = 120
+MAX_POISON = 50
 
 
 class World:
