@@ -9,7 +9,7 @@ class World:
     def __init__(self):
         self.food_amount = 0
         self.poison_amount = 0
-        self.board = random_board()
+        self.board = empty_board()
         self.fill_poison_and_food()
 
     def get(self, location):
@@ -35,19 +35,23 @@ class World:
 
     def fill_poison(self):
         while self.poison_amount < MAX_POISON:
-            location = random_location()
-            while not self.is_free(location):
-                location = random_location()
+            location = self.random_free_location()
             self.force_put(location, CellType.POISON)
             self.poison_amount += 1
 
     def fill_food(self):
         while self.food_amount < MAX_FOOD:
-            location = random_location()
-            while not self.is_free(location):
-                location = random_location()
+            location = self.random_free_location()
             self.force_put(location, CellType.FOOD)
             self.food_amount += 1
+
+    def random_free_location(self):
+        x = randint(0, WORLD_WIDTH - 1)
+        y = randint(0, WORLD_HEIGHT - 1)
+        location = Location(x, y)
+        while not self.is_free(location):
+            location = random_location()
+        return location
 
     def __repr__(self):
         board_repr = ""
@@ -68,7 +72,7 @@ def is_in_range(location):
     return 0 <= location.x < WORLD_WIDTH and 0 <= location.y < WORLD_HEIGHT
 
 
-def random_board():
+def empty_board():
     board = []
     for i in range(WORLD_HEIGHT):
         sub_board = []

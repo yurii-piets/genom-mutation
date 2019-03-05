@@ -12,9 +12,6 @@ class Direction(Enum):
     W = 6
     NW = 7
 
-    def __repr__(self):
-        return self.name
-
 
 directions_vectors = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
 directions = [Direction.N, Direction.NE, Direction.E, Direction.SE, Direction.S, Direction.SW, Direction.W,

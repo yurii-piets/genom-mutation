@@ -1,6 +1,7 @@
 from src.bot.bot import Bot
 from src.bot.genes import Genes
-from src.const.config import BOTS_COUNT
+from src.const.cell import CellType
+from src.const.config import BOTS_COUNT, WORLD_HEIGHT, WORLD_WIDTH
 from src.const.effect import Effect
 from src.world.world import random_location
 
@@ -32,6 +33,11 @@ class BootPool:
             effect = bot.step()
             if effect == Effect.DIE:
                 dead_bots.add(bot)
+            elif effect == Effect.NO_MOVE:
+                bot.energy -= 1
+            if bot.energy <= 0:
+                dead_bots.add(bot)
+
         for bot in dead_bots:
             bot.die()
 

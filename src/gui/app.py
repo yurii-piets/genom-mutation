@@ -4,9 +4,11 @@ import pyglet
 
 from src.bot.boot_pool import BootPool
 from src.bot.bot import Bot
+from src.const.cell import CellType
 from src.const.config import MAX_Y, MAX_X, DEFAULT_SIZE, MARGIN
 from src.gui.cell import cell_color_by_type
 from src.runner import run
+from src.world.location import Location
 from src.world.world import World, WORLD_HEIGHT, WORLD_WIDTH
 
 
@@ -24,16 +26,15 @@ class ShapeWindow(pyglet.window.Window):
 
     def move(self, *args):
         pass
-        # if self.bot_pool.bots_count() > 8:
-        #     self.bot_pool.bots_make_steps()
-        # else:
-        #     self.bot_pool.bots_make_clones()
-        #     self.world.fill_poison_and_food()
 
     def draw_world(self, world):
         for i in range(0, WORLD_HEIGHT):
             for j in range(0, WORLD_WIDTH):
+                loc = Location(j, i)
+                if isinstance(self.world.get(loc), Bot) and self.world.get(loc).energy <= 0:
+                    self.world.force_put(loc, CellType.EMPTY)
                 self.draw_cell(j, i, world.board[i][j])
+
 
     def draw_cell(self, relative_x, relative_y, cell_type):
         absolute_x = 0

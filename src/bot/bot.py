@@ -48,10 +48,10 @@ class Bot:
                 self.genes.shift_pointer(1)
             else:
                 self.genes.shift_pointer(actual_command)
-
             if self.energy <= 0:
                 return Effect.DIE
-        return Effect.OK
+
+        return Effect.NO_MOVE
 
     def move(self, command):
         self.energy -= 1
@@ -130,7 +130,6 @@ class Bot:
         self.direction = get_direction(self.direction, command)
 
     def die(self):
-        self.energy = 0
         self.bot_pool.bot_dead(self)
         if self.world.get(self.location) == self:
             self.world.force_put(self.location, CellType.EMPTY)

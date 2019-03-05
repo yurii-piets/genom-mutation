@@ -60,5 +60,5 @@ class Genes:
 def rand_genes():
     genes = []
     for i in range(0, 12):
-        genes.insert(i, randint(0, 7))
+        genes.insert(i, randint(0, 32))
     return genes

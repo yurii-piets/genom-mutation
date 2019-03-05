@@ -9,3 +9,4 @@ class Effect(Enum):
     MEET_OTHER_BOT = 4
     DIE = 5
     OK = 6
+    NO_MOVE = 7
