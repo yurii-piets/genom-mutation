@@ -1,8 +1,6 @@
 from random import randint
 
-HIGHEST_GENE = 64
-
-MAX_GENES_COUNT = 64
+from src.const.config import MAX_GENES_COUNT, HIGHEST_GENE
 
 
 class Genes:

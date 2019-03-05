@@ -1,22 +1,21 @@
 from random import randint
 
 from src.const.cell import CellType
-from src.const.direction import Direction, get_direction_vector, get_direction
+from src.const.direction import Direction, get_direction_vector, get_direction, rand_direction
 from src.const.effect import Effect
-from src.bot.genes import Genes, HIGHEST_GENE
 from src.world.world import is_in_range
 
 
 class Bot:
 
-    def __init__(self, location, world, bot_pool, genes=Genes()):
+    def __init__(self, location, world, bot_pool, genes):
         self.location = location
         self.genes = genes
         self.world = world
         self.bot_pool = bot_pool
         self.energy = randint(50, 90)
         self.command_pointer = 0
-        self.direction = Direction.N
+        self.direction = rand_direction()
 
     def is_alive(self):
         return self.energy > 0
@@ -47,7 +46,7 @@ class Bot:
             elif actual_command < 32:
                 self.rotate(actual_command)
                 self.genes.shift_pointer(1)
-            elif actual_command <= HIGHEST_GENE:
+            else:
                 self.genes.shift_pointer(actual_command)
 
             if self.energy <= 0:
@@ -56,14 +55,14 @@ class Bot:
 
     def move(self, command):
         self.energy -= 1
-        direction = get_direction_vector(self.direction.value, command)
-        new_location = self.location.transform(direction)
+        direction_vector = get_direction_vector(self.direction.value, command)
+        new_location = self.location.transform(direction_vector)
         effect = self.perform_move(new_location)
-        if effect != Effect.POISONED:
-            self.genes.shift_pointer(1)
-        else:
+        if effect == Effect.POISONED:
             self.world.put(self.location, CellType.POISON)
             return Effect.DIE
+        else:
+            self.genes.shift_pointer(1)
 
     def perform_move(self, new_location):
         new_location_obj = self.world.get(new_location)
@@ -71,6 +70,7 @@ class Bot:
             old_location = self.location
             self.location = new_location
             self.world.force_put(old_location, CellType.EMPTY)
+            self.world.put(new_location, self)
             return self.eat(new_location_obj)
         elif new_location_obj == CellType.EMPTY:
             old_location = self.location
@@ -79,9 +79,15 @@ class Bot:
             self.world.put(new_location, self)
             return Effect.EMPTY
         elif new_location_obj == CellType.WALL:
+            self.rotate_oposite_direction()
             return Effect.WALL
         else:
+            self.energy += 1
             return Effect.MEET_OTHER_BOT
+
+    def rotate_oposite_direction(self):
+        rotate_command_pointer = self.genes.put(4 + 24)
+        self.command_pointer = rotate_command_pointer
 
     def eat(self, cell):
         if cell == CellType.FOOD:
@@ -104,6 +110,8 @@ class Bot:
             self.energy -= 1
             put_index = self.genes.put(command % 8)
             self.genes.move_pointer(put_index)
+        elif peek_object == CellType.WALL or isinstance(peek_object, Bot):
+            self.rotate_oposite_direction()
 
     def lookup(self, command):
         direction = get_direction_vector(self.direction.value, command)
@@ -113,6 +121,8 @@ class Bot:
             self.genes.put(command % 8)
         elif new_location_obj == CellType.POISON:
             self.genes.put(command % 8 + 8)
+        elif new_location_obj == CellType.WALL or isinstance(new_location_obj, Bot):
+            self.rotate_oposite_direction()
         else:
             self.genes.put(command % 8 + 24 + 1)
 

@@ -1,13 +1,8 @@
 from random import randint
 
 from src.const.cell import CellType
+from src.const.config import MAX_POISON, MAX_FOOD, WORLD_WIDTH, WORLD_HEIGHT
 from src.world.location import Location
-
-WORLD_WIDTH = 66
-WORLD_HEIGHT = 33
-
-MAX_FOOD = 120
-MAX_POISON = 50
 
 
 class World:

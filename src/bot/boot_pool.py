@@ -1,11 +1,8 @@
-import datetime
-import time
-
 from src.bot.bot import Bot
+from src.bot.genes import Genes
+from src.const.config import BOTS_COUNT
 from src.const.effect import Effect
 from src.world.world import random_location
-
-BOTS_COUNT = 64
 
 
 class BootPool:
@@ -21,7 +18,7 @@ class BootPool:
             location = random_location()
             while not world.is_free(location):
                 location = random_location()
-            bot = Bot(location, world, self)
+            bot = Bot(location, world, self, genes=Genes())
             world.put(location, bot)
             bots.add(bot)
         return bots
@@ -53,17 +50,18 @@ class BootPool:
 
         self.bots.update(new_bots)
         new_bots = set()
-        # for bot in self.bots:
-        #     if len(new_bots) + self.bots_count() == BOTS_COUNT:
-        #         break
-        #     mutated_bot = bot.clone_with_mutation()
-        #     new_bots.add(mutated_bot)
-        #     location = random_location()
-        #     while not self.world.is_free(location):
-        #         location = random_location()
-        #     mutated_bot.location = location
-        #     self.world.put(location, bot)
-        # self.bots.update(new_bots)
+        if self.bots_count() < BOTS_COUNT:
+            for bot in self.bots:
+                if len(new_bots) + self.bots_count() == BOTS_COUNT:
+                    break
+                mutated_bot = bot.clone_with_mutation()
+                new_bots.add(mutated_bot)
+                location = random_location()
+                while not self.world.is_free(location):
+                    location = random_location()
+                mutated_bot.location = location
+                self.world.put(location, bot)
+            self.bots.update(new_bots)
         self.generation += 1
 
     def bots_count(self):

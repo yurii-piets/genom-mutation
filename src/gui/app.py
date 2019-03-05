@@ -1,14 +1,13 @@
+import _thread
+
 import pyglet
 
 from src.bot.boot_pool import BootPool
 from src.bot.bot import Bot
+from src.const.config import MAX_Y, MAX_X, DEFAULT_SIZE, MARGIN
 from src.gui.cell import cell_color_by_type
+from src.runner import run
 from src.world.world import World, WORLD_HEIGHT, WORLD_WIDTH
-
-MAX_X = 1780
-MAX_Y = 889
-MARGIN = 2
-DEFAULT_SIZE = 25
 
 
 class ShapeWindow(pyglet.window.Window):
@@ -24,11 +23,12 @@ class ShapeWindow(pyglet.window.Window):
         self.draw_generation(self.bot_pool.generation)
 
     def move(self, *args):
-        if self.bot_pool.bots_count() > 8:
-            self.bot_pool.bots_make_steps()
-        else:
-            self.bot_pool.bots_make_clones()
-            self.world.fill_poison_and_food()
+        pass
+        # if self.bot_pool.bots_count() > 8:
+        #     self.bot_pool.bots_make_steps()
+        # else:
+        #     self.bot_pool.bots_make_clones()
+        #     self.world.fill_poison_and_food()
 
     def draw_world(self, world):
         for i in range(0, WORLD_HEIGHT):
@@ -66,11 +66,12 @@ class ShapeWindow(pyglet.window.Window):
     def draw_text(self, text, absolute_x, absolute_y):
         label = pyglet.text.Label(str(text),
                                   font_name='Roboto',
-                                  font_size=14,
+                                  font_size=10,
                                   x=absolute_x - DEFAULT_SIZE + MARGIN, y=absolute_y - DEFAULT_SIZE + MARGIN)
         label.draw()
 
 
 shape_window = ShapeWindow()
+_thread.start_new_thread(run, (shape_window.world, shape_window.bot_pool, ))
 pyglet.clock.schedule_interval(shape_window.move, 0.3)
 pyglet.app.run()

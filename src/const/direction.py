@@ -1,4 +1,5 @@
 from enum import Enum
+from random import randint
 
 
 class Direction(Enum):
@@ -10,6 +11,9 @@ class Direction(Enum):
     SW = 5
     W = 6
     NW = 7
+
+    def __repr__(self):
+        return self.name
 
 
 directions_vectors = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
@@ -27,3 +31,7 @@ def get_direction_vector(start, index):
 def get_direction(start, index):
     final_index = (start.value + index) % DIRECTIONS_COUNT
     return directions[final_index]
+
+
+def rand_direction():
+    return directions[randint(0, DIRECTIONS_COUNT - 1)]
