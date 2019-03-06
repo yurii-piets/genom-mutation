@@ -1,5 +1,7 @@
 # Bots properties
 BOTS_COUNT = 64
+BOTS_CLONES = 0
+MIN_BOTS = 8
 
 # Genes properties
 HIGHEST_GENE = 63

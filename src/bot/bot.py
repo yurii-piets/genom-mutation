@@ -1,7 +1,7 @@
 from random import randint
 
 from src.const.cell import CellType
-from src.const.direction import Direction, get_direction_vector, get_direction, rand_direction
+from src.const.direction import get_direction_vector, get_direction, rand_direction
 from src.const.effect import Effect
 from src.world.world import is_in_range
 
@@ -92,8 +92,10 @@ class Bot:
     def eat(self, cell):
         if cell == CellType.FOOD:
             self.energy += 10
+            self.world.food_amount -= 1
             return Effect.FOOD
         elif cell == CellType.POISON:
+            self.world.poison_amount -= 1
             return Effect.POISONED
 
     def peek(self, command):

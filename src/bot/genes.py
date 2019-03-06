@@ -49,12 +49,12 @@ class Genes:
             self.genes_pointer %= self.last_index
 
     def __repr__(self):
-        acc = ""
-        for i in range(0, self.genes_pointer):
-            acc += str(self.genes[i]) + " "
-            if i % 8 == 0:
-                acc += "\n"
-        return acc
+        acc = "["
+        for i in range(0, self.last_index):
+            acc += str(self.genes[i]) + ", "
+            # if i % 8 == 0:
+            #     acc += "\n"
+        return acc + "]"
 
 
 def rand_genes():

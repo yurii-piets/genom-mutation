@@ -1,7 +1,6 @@
 from src.bot.bot import Bot
 from src.bot.genes import Genes
-from src.const.cell import CellType
-from src.const.config import BOTS_COUNT, WORLD_HEIGHT, WORLD_WIDTH
+from src.const.config import BOTS_COUNT, BOTS_CLONES
 from src.const.effect import Effect
 from src.world.world import random_location
 
@@ -38,6 +37,9 @@ class BootPool:
             if bot.energy <= 0:
                 dead_bots.add(bot)
 
+            if self.bots_count() <= 8:
+                break
+
         for bot in dead_bots:
             bot.die()
 
@@ -45,7 +47,7 @@ class BootPool:
         new_bots = set()
         for bot in self.bots:
             if bot.is_alive():
-                for i in range(7):
+                for i in range(BOTS_CLONES):
                     mutated_bot = bot.clone_with_mutation()
                     new_bots.add(mutated_bot)
                     location = random_location()

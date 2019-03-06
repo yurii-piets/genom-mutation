@@ -19,9 +19,12 @@ class ShapeWindow(pyglet.window.Window):
         self.set_size(MAX_X, MAX_Y)
         self.world = World()
         self.bot_pool = BootPool(self.world)
+        self.bots_count_label = None
+        self.generation_label = None
 
     def on_draw(self):
         self.draw_world(self.world)
+        self.draw_bots_count(self.bot_pool.bots_count())
         self.draw_generation(self.bot_pool.generation)
 
     def move(self, *args):
@@ -34,7 +37,6 @@ class ShapeWindow(pyglet.window.Window):
                 if isinstance(self.world.get(loc), Bot) and self.world.get(loc).energy <= 0:
                     self.world.force_put(loc, CellType.EMPTY)
                 self.draw_cell(j, i, world.board[i][j])
-
 
     def draw_cell(self, relative_x, relative_y, cell_type):
         absolute_x = 0
@@ -52,11 +54,24 @@ class ShapeWindow(pyglet.window.Window):
             self.draw_text(cell_type.energy, absolute_x, absolute_y)
 
     def draw_generation(self, generation):
-        label = pyglet.text.Label("Generation: " + str(generation),
-                                  font_name='Roboto',
-                                  font_size=14,
-                                  x=28, y=3)
-        label.draw()
+        if self.generation_label is not None:
+            self.generation_label.delete()
+
+        self.generation_label = pyglet.text.Label("Generation: " + str(generation),
+                                                  font_name='Roboto',
+                                                  font_size=14,
+                                                  x=28, y=3)
+        self.generation_label.draw()
+
+    def draw_bots_count(self, bots_count):
+        if self.bots_count_label is not None:
+            self.bots_count_label.delete()
+
+        self.bots_count_label = pyglet.text.Label("Bots count: " + str(bots_count),
+                                                  font_name='Roboto',
+                                                  font_size=14,
+                                                  x=300, y=3)
+        self.bots_count_label.draw()
 
     def draw_rectangle(self, absolute_x, absolute_y, color, size=DEFAULT_SIZE):
         pyglet.graphics.draw(4, pyglet.gl.GL_QUADS,
@@ -73,6 +88,6 @@ class ShapeWindow(pyglet.window.Window):
 
 
 shape_window = ShapeWindow()
-_thread.start_new_thread(run, (shape_window.world, shape_window.bot_pool, ))
+_thread.start_new_thread(run, (shape_window.world, shape_window.bot_pool,))
 pyglet.clock.schedule_interval(shape_window.move, 0.3)
 pyglet.app.run()
