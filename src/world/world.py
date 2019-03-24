@@ -2,7 +2,7 @@ from random import randint
 
 from src.const.cell import CellType
 from src.const.config import MAX_POISON, MAX_FOOD, WORLD_WIDTH, WORLD_HEIGHT
-from src.world.location import Location
+from src.world.location import Location, random_location
 
 
 class World:
@@ -12,22 +12,50 @@ class World:
         put_walls(self)
         self.food_amount = 0
         self.poison_amount = 0
+        self.fill_food()
+        self.fill_poison()
 
     def get_cell(self, location):
         if not is_in_range(location):
             raise_out_of_world_range_exception(location)
         cell_object = self.cells.get(location.to_tuple())
-        if cell_object is None:
+        if self.is_free(location):
             return CellType.EMPTY
         return cell_object
 
     def put_cell(self, location, obj):
         if not is_in_range(location):
             raise_out_of_world_range_exception(location)
-        if self.get_cell(location) == CellType.EMPTY:
-            self.cells[location.to_tuple()] = obj
-            return True
-        return False
+        if not self.is_free(location):
+            return False
+        self.cells[location.to_tuple()] = obj
+        return True
+
+    def fill_food(self):
+        while self.food_amount < MAX_FOOD:
+            location = self.rand_free_location()
+            self.put_cell(location, CellType.FOOD)
+            self.food_amount += 1
+
+    def fill_poison(self):
+        while self.poison_amount < MAX_POISON:
+            location = self.rand_free_location()
+            self.put_cell(location, CellType.POISON)
+            self.poison_amount += 1
+
+    def is_free(self, location):
+        if not is_in_range(location):
+            raise_out_of_world_range_exception(location)
+        cell_object = self.cells.get(location.to_tuple())
+        return cell_object is None or cell_object == CellType.EMPTY
+
+    def rand_free_location(self):
+        if len(self.cells) >= (WORLD_HEIGHT - 1) * (WORLD_WIDTH - 1):
+            raise Exception("No free locations in the world has left")
+        location = random_location()
+        while not self.is_free(location):
+            location = random_location()
+        return location
 
 
 def is_in_range(location):

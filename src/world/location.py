@@ -19,6 +19,6 @@ class Location:
 
 
 def random_location():
-    rand_x = randint(0, WORLD_WIDTH)
-    rand_y = randint(0, WORLD_HEIGHT)
+    rand_x = randint(0, WORLD_WIDTH - 1)
+    rand_y = randint(0, WORLD_HEIGHT - 1)
     return Location(rand_x, rand_y)
