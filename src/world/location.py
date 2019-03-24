@@ -6,5 +6,8 @@ class Location:
     def transform(self, transition_vector):
         return Location(self.x + transition_vector[0], self.y + transition_vector[1])
 
+    def to_tuple(self):
+        return self.x, self.y
+
     def __repr__(self):
         return "(" + str(self.x) + ", " + str(self.y) + ")"
