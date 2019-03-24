@@ -33,9 +33,6 @@ class ShapeWindow(pyglet.window.Window):
     def draw_world(self, world):
         for i in range(0, WORLD_HEIGHT):
             for j in range(0, WORLD_WIDTH):
-                loc = Location(j, i)
-                if isinstance(self.world.get(loc), Bot) and self.world.get(loc).energy <= 0:
-                    self.world.force_put(loc, CellType.EMPTY)
                 self.draw_cell(j, i, world.board[i][j])
 
     def draw_cell(self, relative_x, relative_y, cell_type):
