@@ -18,22 +18,22 @@ class ShapeWindow(pyglet.window.Window):
         pyglet.window.Window.__init__(self, *args, **kwargs)
         self.set_size(MAX_X, MAX_Y)
         self.world = World()
-        self.bot_pool = BootPool(self.world)
+        # self.bot_pool = BootPool(self.world)
         self.bots_count_label = None
         self.generation_label = None
 
     def on_draw(self):
         self.draw_world(self.world)
-        self.draw_bots_count(self.bot_pool.bots_count())
-        self.draw_generation(self.bot_pool.generation)
+        # self.draw_bots_count(self.bot_pool.bots_count())
+        # self.draw_generation(self.bot_pool.generation)
 
     def move(self, *args):
         pass
 
     def draw_world(self, world):
-        for i in range(0, WORLD_HEIGHT):
-            for j in range(0, WORLD_WIDTH):
-                self.draw_cell(j, i, world.board[i][j])
+        for i in range(0, WORLD_WIDTH):
+            for j in range(0, WORLD_HEIGHT):
+                self.draw_cell(i, j, world.get_cell(Location(i, j)))
 
     def draw_cell(self, relative_x, relative_y, cell_type):
         absolute_x = 0
@@ -85,6 +85,6 @@ class ShapeWindow(pyglet.window.Window):
 
 
 shape_window = ShapeWindow()
-_thread.start_new_thread(run, (shape_window.world, shape_window.bot_pool,))
+# _thread.start_new_thread(run, (shape_window.world, shape_window.bot_pool,))
 pyglet.clock.schedule_interval(shape_window.move, 0.3)
 pyglet.app.run()
