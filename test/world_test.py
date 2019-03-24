@@ -31,6 +31,17 @@ class TestStringMethods(unittest.TestCase):
         with self.assertRaises(Exception):
             world.put_cell(Location(999999, 988888), CellType.POISON)
 
+    def test_update_when_is_free(self):
+        world = World()
+        old_value = world.update_cell(Location(1, 1), CellType.POISON)
+        self.assertIsNone(old_value)
+
+    def test_update_when_is_not_free(self):
+        world = World()
+        world.put_cell(Location(1, 1), CellType.FOOD)
+        old_value = world.update_cell(Location(1, 1), CellType.POISON)
+        self.assertEqual(old_value, CellType.FOOD)
+
 
 if __name__ == '__main__':
     unittest.main()

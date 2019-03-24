@@ -31,6 +31,14 @@ class World:
         self.cells[location.to_tuple()] = obj
         return True
 
+    def update_cell(self, location, obj):
+        if not is_in_range(location):
+            raise_out_of_world_range_exception(location)
+        location_tuple = location.to_tuple()
+        old_value = self.cells.get(location_tuple)
+        self.cells[location_tuple] = obj
+        return old_value
+
     def fill_food(self):
         while self.food_amount < MAX_FOOD:
             location = self.rand_free_location()
