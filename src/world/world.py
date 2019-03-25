@@ -28,7 +28,8 @@ class World:
             raise_out_of_world_range_exception(location)
         if not self.is_free(location):
             return False
-        self.cells[location.to_tuple()] = obj
+        if obj != CellType.EMPTY:
+            self.cells[location.to_tuple()] = obj
         return True
 
     def update_cell(self, location, obj):
@@ -36,7 +37,11 @@ class World:
             raise_out_of_world_range_exception(location)
         location_tuple = location.to_tuple()
         old_value = self.cells.get(location_tuple)
-        self.cells[location_tuple] = obj
+        if obj == CellType.EMPTY:
+            if location.to_tuple() in self.cells:
+                self.cells.pop(location.to_tuple())
+        else:
+            self.cells[location.to_tuple()] = obj
         return old_value
 
     def fill_food(self):
