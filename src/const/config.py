@@ -6,6 +6,7 @@ MIN_BOTS = 8
 # Genes properties
 HIGHEST_GENE = 63
 MAX_GENES_COUNT = 64
+MAX_MUTATION_GENES = 10
 
 # World properties
 WORLD_WIDTH = 66
