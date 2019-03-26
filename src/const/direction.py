@@ -25,14 +25,14 @@ def get_direction_vector(start_direction, index):
     return directions_vectors[final_index]
 
 
+def get_direction(start, index):
+    final_index = (start.value + index) % DIRECTIONS_COUNT
+    return directions[final_index]
+
+
 def rand_direction():
     return directions[randint(0, DIRECTIONS_COUNT - 1)]
 
 # def get_direction_vector(start, index):
 #     final_index = (start + index) % DIRECTIONS_COUNT
 #     return directions_vectors[final_index]
-
-
-# def get_direction(start, index):
-#     final_index = (start.value + index) % DIRECTIONS_COUNT
-#     return directions[final_index]

@@ -2,9 +2,9 @@ from random import randint
 
 from src.bot.genes import Genes
 from src.const.cell import CellType
-from src.const.direction import rand_direction, get_direction_vector
+from src.const.direction import rand_direction, get_direction_vector, get_direction
 
-ROTATE_45_DEGREE_GENE = 25
+ROTATE_45_DEGREE_GENE = 24
 
 
 class Bot:
@@ -24,6 +24,12 @@ class Bot:
                 break
             elif is_peek_command(current_command):
                 self.peek(current_command % 8)
+            elif is_lookup_command(current_command):
+                self.lookup(current_command % 16)
+            elif is_rotate_command(current_command):
+                self.rotate(current_command % 24)
+            else:
+                self.genes.shift_pointer(current_command)
         self.energy -= 1
 
     def move(self, command):
@@ -49,7 +55,7 @@ class Bot:
     def peek(self, command):
         new_cell, peek_location = self.get_new_cell_from_nell_location(command)
         if new_cell == CellType.EMPTY:
-            self.genes.put_with_point(ROTATE_45_DEGREE_GENE)  # rotate 45 degrees
+            self.genes.put_with_point(ROTATE_45_DEGREE_GENE)
         elif new_cell == CellType.FOOD:
             self.genes.put_with_point(command)
         elif new_cell == CellType.POISON:
@@ -60,6 +66,22 @@ class Bot:
         elif isinstance(new_cell, Bot):
             self.genes.put_with_point(ROTATE_45_DEGREE_GENE)
             self.energy += 1
+
+    def lookup(self, command):
+        lookup_cell, lookup_location = self.get_new_cell_from_nell_location(command)
+        if lookup_cell == CellType.EMPTY:
+            self.genes.put_with_point(ROTATE_45_DEGREE_GENE)
+        elif lookup_cell == CellType.FOOD:
+            self.genes.put_with_point(8 + command)
+        elif lookup_cell == CellType.POISON:
+            self.genes.put_with_point(ROTATE_45_DEGREE_GENE)
+        elif lookup_cell == CellType.WALL:
+            self.genes.put_with_point(ROTATE_45_DEGREE_GENE)
+        elif isinstance(lookup_cell, Bot):
+            self.genes.put_with_point(8 + command)
+
+    def rotate(self, command):
+        self.direction = get_direction(self.direction, command + 1)
 
     def get_new_cell_from_nell_location(self, command):
         direction_vector = get_direction_vector(self.direction, command)
@@ -77,3 +99,11 @@ def is_move_command(command):
 
 def is_peek_command(command):
     return 8 <= command <= 15
+
+
+def is_lookup_command(command):
+    return 16 <= command <= 23
+
+
+def is_rotate_command(command):
+    return 24 <= command <= 30
