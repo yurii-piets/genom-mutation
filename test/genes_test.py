@@ -15,7 +15,7 @@ class GenesTest(unittest.TestCase):
     def test_get_next(self):
         genes = Genes()
         gene = genes.get_next()
-        self.assertIn(gene, range(0, 32))
+        self.assertIn(gene, range(0, 33))
 
     def test_put(self):
         genes = Genes()
@@ -106,9 +106,9 @@ class GenesTest(unittest.TestCase):
     def test_put_with_point(self):
         genes = Genes()
         genes.put_with_point(65)
-        self.assertEqual(genes.get_next(), 65)
-        self.assertEqual(genes.pointer, 10)
-        self.assertEqual(genes.put_index, 11)
+        self.assertEqual(10, genes.pointer)
+        self.assertEqual(65, genes.get_next())
+        self.assertEqual(11, genes.put_index)
 
     def test_mutate(self):
         genes = Genes()

@@ -1,6 +1,6 @@
 import unittest
 
-from src.bot.bot import Bot
+from src.bot.bot import Bot, ROTATE_45_DEGREE_GENE
 from src.const.cell import CellType
 from src.const.direction import Direction
 from src.world.location import Location
@@ -66,7 +66,7 @@ class BotPeekTest(unittest.TestCase):
         self.assertEqual(Direction.E, bot.direction)
         self.assertEqual(CellType.WALL, world.get_cell(Location(0, 0)))
         self.assertTrue(isinstance(world.get_cell(bot_location), Bot))
-        self.assertEqual(25, bot.genes.get_next())
+        self.assertEqual(ROTATE_45_DEGREE_GENE, bot.genes.get_next())
 
     def test_peek_bot(self):
         pass
