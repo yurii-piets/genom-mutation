@@ -50,7 +50,7 @@ class Bot:
             self.genes.put_with_point(ROTATE_45_DEGREE_GENE)
         elif isinstance(new_cell, Bot):
             self.genes.put_with_point(ROTATE_45_DEGREE_GENE)
-            self.energy += 1
+            self.energy += 2
 
     def peek(self, command):
         new_cell, peek_location = self.get_new_cell_from_nell_location(command)
@@ -65,7 +65,7 @@ class Bot:
             self.genes.put_with_point(ROTATE_45_DEGREE_GENE)
         elif isinstance(new_cell, Bot):
             self.genes.put_with_point(ROTATE_45_DEGREE_GENE)
-            self.energy += 1
+            self.energy += 2
 
     def lookup(self, command):
         lookup_cell, lookup_location = self.get_new_cell_from_nell_location(command)

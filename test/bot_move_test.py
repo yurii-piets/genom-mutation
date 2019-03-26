@@ -64,7 +64,7 @@ class BotMoveTest(unittest.TestCase):
         self.assertEqual(current_bot, world.get_cell(current_bot_location))
         self.assertEqual(other_bot, world.get_cell(other_bot_location))
         self.assertEqual(Direction.S, current_bot.direction)
-        self.assertEqual(11, current_bot.energy)
+        self.assertEqual(12, current_bot.energy)
         self.assertEqual(ROTATE_45_DEGREE_GENE, current_bot.genes.get_next())
 
     def test_move_to_wall(self):
