@@ -65,6 +65,7 @@ class BotMoveTest(unittest.TestCase):
         self.assertEqual(other_bot, world.get_cell(other_bot_location))
         self.assertEqual(Direction.S, current_bot.direction)
         self.assertEqual(11, current_bot.energy)
+        self.assertEqual(25, current_bot.genes.get_next())
 
     def test_move_to_wall(self):
         world = World()
@@ -76,6 +77,7 @@ class BotMoveTest(unittest.TestCase):
         self.assertEqual(CellType.WALL, world.get_cell(Location(0, 0)))
         self.assertTrue(isinstance(world.get_cell(old_location), Bot))
         self.assertEqual(Direction.NW, bot.direction)
+        self.assertEqual(25, bot.genes.get_next())
 
 
 if __name__ == '__main__':

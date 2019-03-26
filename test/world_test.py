@@ -4,7 +4,7 @@ from src.world.world import World
 import unittest
 
 
-class TestStringMethods(unittest.TestCase):
+class WorldTest(unittest.TestCase):
 
     def test_get_when_not_exist(self):
         world = World()

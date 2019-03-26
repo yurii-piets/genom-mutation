@@ -4,7 +4,7 @@ from src.bot.genes import Genes
 from src.const.config import MAX_GENES_COUNT
 
 
-class TestStringMethods(unittest.TestCase):
+class GenesTest(unittest.TestCase):
 
     def test_init(self):
         genes = Genes()

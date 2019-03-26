@@ -12,7 +12,9 @@ class Genes:
         self.last_index = len(self.genes) - 1
 
     def get_next(self):
-        return self.genes[self.pointer]
+        next_gene = self.genes[self.pointer]
+        self.shift_pointer(1)
+        return next_gene
 
     def put(self, gene):
         if self.last_index < MAX_GENES_COUNT:
