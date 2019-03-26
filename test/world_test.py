@@ -21,6 +21,12 @@ class TestStringMethods(unittest.TestCase):
         result = world.get_cell(location)
         self.assertEqual(CellType.WALL, result)
 
+    def test_get(self):
+        world = World()
+        world.put_cell(Location(1, 3), CellType.POISON)
+        result = world.get_cell(Location(1, 3))
+        self.assertEqual(result, CellType.POISON)
+
     def test_put(self):
         world = World()
         location = Location(2, 3)

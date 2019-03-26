@@ -117,5 +117,6 @@ class TestStringMethods(unittest.TestCase):
         genes.mutate()
         self.assertEqual(len(genes), 11)
 
+
 if __name__ == '__main__':
     unittest.main()
