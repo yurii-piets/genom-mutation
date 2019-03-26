@@ -13,11 +13,11 @@ class BootPool:
     def execute_bots_commands(self):
         dead_bots = set()
         for bot in self.bots:
+            if BOTS_COUNT - len(dead_bots) <= MIN_BOTS:
+                break
             bot.execute_commands()
             if not bot.is_alive():
                 dead_bots.add(bot)
-            if BOTS_COUNT - len(dead_bots) <= MIN_BOTS:
-                break
 
         for bot in dead_bots:
             self.world.update_cell(bot.location, CellType.EMPTY)

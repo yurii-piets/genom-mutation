@@ -10,8 +10,6 @@ class World:
     def __init__(self):
         self.cells = {}
         put_walls(self)
-        self.food_amount = 0
-        self.poison_amount = 0
         self.fill_food()
         self.fill_poison()
 
@@ -45,16 +43,14 @@ class World:
         return old_value
 
     def fill_food(self):
-        while self.food_amount < MAX_FOOD:
+        while self.food_amount() < MAX_FOOD:
             location = self.rand_free_location()
-            self.put_cell(location, CellType.FOOD)
-            self.food_amount += 1
+            self.update_cell(location, CellType.FOOD)
 
     def fill_poison(self):
-        while self.poison_amount < MAX_POISON:
+        while self.poison_amount() < MAX_POISON:
             location = self.rand_free_location()
-            self.put_cell(location, CellType.POISON)
-            self.poison_amount += 1
+            self.update_cell(location, CellType.POISON)
 
     def is_free(self, location):
         if not is_in_range(location):
@@ -69,6 +65,12 @@ class World:
         while not self.is_free(location):
             location = random_location()
         return location
+
+    def food_amount(self):
+        return sum(value == CellType.FOOD for value in self.cells.values())
+
+    def poison_amount(self):
+        return sum(value == CellType.POISON for value in self.cells.values())
 
 
 def is_in_range(location):
