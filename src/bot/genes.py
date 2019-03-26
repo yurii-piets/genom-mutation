@@ -50,6 +50,14 @@ class Genes:
             self.genes[index] = new_gen
             mutated_indexes.add(index)
 
+    def clone(self):
+        clone = Genes()
+        clone.pointer = self.pointer
+        clone.put_index = self.put_index
+        clone.last_index = self.last_index
+        clone.genes = self.genes.copy()
+        return clone
+
     def __len__(self):
         return len(self.genes)
 

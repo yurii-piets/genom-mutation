@@ -35,7 +35,7 @@ class BotMoveTest(unittest.TestCase):
         self.assertTrue(isinstance(world.get_cell(expected_future_location), Bot))
         self.assertEqual(CellType.EMPTY, world.get_cell(old_location))
         self.assertEqual(Direction.NE, bot.direction)
-        self.assertEqual(21, bot.energy)
+        self.assertEqual(22, bot.energy)
 
     def test_move_to_poison(self):
         world = World()

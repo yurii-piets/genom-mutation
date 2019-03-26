@@ -11,10 +11,11 @@ class Bot:
 
     def __init__(self, location, world):
         self.energy = randint(50, 90)
-        self.genes = Genes()
         self.direction = rand_direction()
+        self.genes = Genes()
         self.location = location
         self.world = world
+        self.generation = 0
 
     def execute_commands(self):
         for i in range(10):
@@ -42,7 +43,7 @@ class Bot:
             self.world.update_cell(new_location, self)
             self.world.update_cell(self.location, CellType.EMPTY)
             self.location = new_location
-            self.energy += 10
+            self.energy += 11
         elif new_cell == CellType.POISON:
             self.energy = 0
             self.world.update_cell(self.location, CellType.EMPTY)
@@ -91,6 +92,16 @@ class Bot:
 
     def is_alive(self):
         return self.energy > 0
+
+    def clone_with_mutation(self):
+        clone = Bot(None, self.world)
+        clone.genes = self.genes.clone()
+        clone.mutate()
+        self.energy = randint(40, 80)
+        return clone
+
+    def mutate(self):
+        self.genes.mutate()
 
 
 def is_move_command(command):
