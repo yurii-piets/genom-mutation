@@ -17,12 +17,15 @@ class Genes:
         return next_gene
 
     def put(self, gene):
+        if self.last_index == MAX_GENES_COUNT:
+            self.genes[self.put_index] = gene
+        else:
+            self.genes.insert(self.put_index, gene)
         if self.last_index < MAX_GENES_COUNT:
             self.last_index += 1
-        if self.put_index > MAX_GENES_COUNT:
-            self.put_index = 0
-        self.genes.insert(self.put_index, gene)
         self.put_index += 1
+        if self.put_index >= MAX_GENES_COUNT:
+            self.put_index = 0
 
     def shift_pointer(self, shift_index):
         self.pointer = (shift_index + self.pointer) % (self.last_index + 1)
@@ -65,6 +68,6 @@ class Genes:
 def rand_genes():
     genes = []
     for i in range(0, 10):
-        gene = randint(0, 32)
+        gene = randint(0, 30)
         genes.append(gene)
     return genes

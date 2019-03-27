@@ -97,7 +97,6 @@ class Bot:
         clone = Bot(None, self.world)
         clone.genes = self.genes.clone()
         clone.mutate()
-        self.energy = randint(40, 80)
         return clone
 
     def mutate(self):

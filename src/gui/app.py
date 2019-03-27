@@ -67,7 +67,7 @@ class ShapeWindow(pyglet.window.Window):
         self.bots_count_label = pyglet.text.Label("Bots count: " + str(bots_count),
                                                   font_name='Roboto',
                                                   font_size=14,
-                                                  x=300, y=3)
+                                                  x=500, y=3)
         self.bots_count_label.draw()
 
     def draw_rectangle(self, absolute_x, absolute_y, color, size=DEFAULT_SIZE):

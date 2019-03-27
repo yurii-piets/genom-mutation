@@ -1,5 +1,7 @@
 import unittest
 
+import numpy as np
+
 from src.bot.genes import Genes
 from src.const.config import MAX_GENES_COUNT
 
@@ -26,16 +28,18 @@ class GenesTest(unittest.TestCase):
         self.assertEqual(18, genes.genes[10])
 
     def test_put_with_shift(self):
+        pass
+
+    def test_shift_pointer(self):
         genes = Genes()
-        for i in range(64):
-            genes.put(i)
-            if genes.last_index < MAX_GENES_COUNT:
-                self.assertEqual(i + 10, genes.last_index)
-                self.assertEqual(i + 11, genes.put_index)
-        self.assertEqual(MAX_GENES_COUNT, genes.last_index)
-        genes.put(22)
+        genes.genes = np.arange(0, 64)
+        genes.pointer = 64
+        genes.last_index = 64
+        genes.put_index = 0
+        genes.put_with_point(1)
         self.assertEqual(0, genes.pointer)
-        self.assertEqual(10, genes.put_index)
+        self.assertEqual(64, genes.last_index)
+        self.assertEqual(0, genes.put_index)
 
     def test_shift_pointer_no_cycle(self):
         genes = Genes()

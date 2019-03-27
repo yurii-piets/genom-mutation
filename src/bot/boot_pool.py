@@ -1,3 +1,5 @@
+from random import randint
+
 from src.bot.bot import Bot
 from src.const.cell import CellType
 from src.const.config import BOTS_COUNT, MIN_BOTS, BOTS_CLONES
@@ -28,6 +30,9 @@ class BootPool:
         new_bots = set()
         for bot in self.bots:
             bot.generation += 1
+            future_energy = randint(40, 80)
+            if future_energy > bot.energy:
+                bot.energy = future_energy
             for i in range(BOTS_CLONES):
                 mutated_bot = bot.clone_with_mutation()
                 location = self.world.rand_free_location()
