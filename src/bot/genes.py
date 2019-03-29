@@ -1,6 +1,6 @@
 from random import randint
 
-from src.const.config import MAX_GENES_COUNT, MAX_MUTATION_GENES
+from src.const.config import MAX_GENES_COUNT, MAX_MUTATION_GENES, HIGHEST_GENE
 
 
 class Genes:
@@ -67,7 +67,7 @@ class Genes:
 
 def rand_genes():
     genes = []
-    for i in range(0, 10):
-        gene = randint(0, 30)
+    for i in range(0, MAX_GENES_COUNT):
+        gene = randint(0, HIGHEST_GENE)
         genes.append(gene)
     return genes

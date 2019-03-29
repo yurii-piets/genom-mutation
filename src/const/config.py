@@ -1,6 +1,7 @@
 # Bots properties
 BOTS_COUNT = 64
-BOTS_CLONES = 7
+BOTS_CLONES = 6
+BOTS_MUTATED_CLONES = 1
 MIN_BOTS = 8
 
 # Genes properties

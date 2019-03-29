@@ -6,6 +6,13 @@ from src.const.cell import CellType
 from src.const.config import MIN_BOTS
 from src.world.world import World
 
+SLEEP_BETWEEN_STEPS = 0.8
+
+
+def print_genes(bots):
+    for bot in bots:
+        print("Bot g: " + str(bot.generation) + ", a: " + str(bot.generations_alive) + ", g: " + str(bot.genes.genes))
+
 
 def run(world, bot_pool):
     while True:
@@ -17,14 +24,17 @@ def run(world, bot_pool):
             print(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + "| Generation: " + str(bot_pool.generation))
             print(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + "| Longest bot generation: " + str(max(value.generation for value in bot_pool.bots)))
             print(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + "| Longest genes: " + str(max(len(value.genes) for value in bot_pool.bots)))
+            print_genes(bot_pool.bots)
             world.fill_food()
             world.fill_poison()
-        time.sleep(0.8)
+        time.sleep(SLEEP_BETWEEN_STEPS)
 
 
-#world = World()
-#bot_pool = BootPool(world)
-#run(world, bot_pool)
+if __name__ == '__main__':
+    SLEEP_BETWEEN_STEPS = 0
+    world = World()
+    bot_pool = BootPool(world)
+    run(world, bot_pool)
 
 # print(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + "| Steps")
 # print(datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + "| Fill food: "
