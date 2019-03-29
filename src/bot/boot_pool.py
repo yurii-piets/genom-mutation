@@ -1,8 +1,8 @@
-from random import randint
+from random import randint, sample
 
 from src.bot.bot import Bot
 from src.const.cell import CellType
-from src.const.config import BOTS_COUNT, MIN_BOTS, BOTS_CLONES, BOTS_MUTATED_CLONES
+from src.const.config import BOTS_COUNT, MIN_BOTS, BOTS_CLONES
 
 
 class BootPool:
@@ -28,29 +28,24 @@ class BootPool:
     def clone_bots(self):
         self.generation += 1
         new_bots = set()
+
+        bots_to_mutate = sample(self.bots, 1)
+
         for bot in self.bots:
-            bot.generation += 1
             bot.generations_alive += 1
             future_energy = randint(40, 80)
             if future_energy > bot.energy:
                 bot.energy = future_energy
+            if bot in bots_to_mutate:
+                bot.mutate()
+            else:
+                bot.generation += 1
             for i in range(BOTS_CLONES):
                 cloned_bot = bot.clone()
                 location = self.world.rand_free_location()
                 cloned_bot.location = location
                 self.world.put_cell(location, cloned_bot)
-                cloned_bot.generation = self.generation
                 new_bots.add(cloned_bot)
-
-            for i in range(BOTS_MUTATED_CLONES):
-                mutated_bot = bot.clone()
-                mutated_bot.genes = bot.genes.clone()
-                mutated_bot.genes.mutate()
-                location = self.world.rand_free_location()
-                mutated_bot.location = location
-                self.world.put_cell(location, mutated_bot)
-                mutated_bot.generation = 0
-                new_bots.add(mutated_bot)
 
         self.bots.update(new_bots)
 

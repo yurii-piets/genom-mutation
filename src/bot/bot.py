@@ -99,15 +99,13 @@ class Bot:
     def clone(self):
         clone = Bot(None, self.world)
         clone.genes = self.genes.clone()
-        return clone
-
-    def clone_with_mutation(self):
-        clone = self.clone()
-        clone.mutate()
+        clone.generation = self.generation
         return clone
 
     def mutate(self):
         self.genes.mutate()
+        self.generation = 0
+
 
 
 def is_move_command(command):

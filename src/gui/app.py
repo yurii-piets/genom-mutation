@@ -51,23 +51,23 @@ class ShapeWindow(pyglet.window.Window):
             self.draw_text(cell_type.energy, absolute_x, absolute_y)
 
     def draw_generation(self, generation):
-        if self.generation_label is not None:
-            self.generation_label.delete()
-
-        self.generation_label = pyglet.text.Label("Generation: " + str(generation),
-                                                  font_name='Roboto',
-                                                  font_size=14,
-                                                  x=28, y=3)
+        if self.generation_label is None:
+            self.generation_label = pyglet.text.Label("Generation: " + str(generation),
+                                                      font_name='Roboto',
+                                                      font_size=14,
+                                                      x=28, y=3)
+        else:
+            self.generation_label.text = "Generation: " + str(generation)
         self.generation_label.draw()
 
     def draw_bots_count(self, bots_count):
-        if self.bots_count_label is not None:
-            self.bots_count_label.delete()
-
-        self.bots_count_label = pyglet.text.Label("Bots count: " + str(bots_count),
-                                                  font_name='Roboto',
-                                                  font_size=14,
-                                                  x=500, y=3)
+        if self.bots_count_label is None:
+            self.bots_count_label = pyglet.text.Label("Bots count: " + str(bots_count),
+                                                      font_name='Roboto',
+                                                      font_size=14,
+                                                      x=500, y=3)
+        else:
+            self.bots_count_label.text = "Bots count: " + str(bots_count)
         self.bots_count_label.draw()
 
     def draw_rectangle(self, absolute_x, absolute_y, color, size=DEFAULT_SIZE):
