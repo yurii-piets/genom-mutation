@@ -4,7 +4,6 @@ import pyglet
 
 from src.bot.boot_pool import BootPool
 from src.bot.bot import Bot
-from src.const.cell import CellType
 from src.const.config import MAX_Y, MAX_X, DEFAULT_SIZE, MARGIN
 from src.gui.cell import cell_color_by_type
 from src.runner import run

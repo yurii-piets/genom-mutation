@@ -55,7 +55,7 @@ class Genes:
 
     def clone(self):
         clone = Genes()
-        clone.pointer = self.pointer
+        clone.pointer = 0
         clone.put_index = self.put_index
         clone.last_index = self.last_index
         clone.genes = self.genes.copy()
