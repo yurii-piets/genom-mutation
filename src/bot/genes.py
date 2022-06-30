@@ -33,10 +33,6 @@ class Genes:
     def move_pointer(self, move_index):
         self.pointer = move_index % (self.last_index + 1)
 
-    def put_with_point(self, gene):
-        self.pointer = self.put_index
-        self.put(gene)
-
     def mutate(self):
         stop = randint(0, self.last_index // 3)
         if stop > MAX_MUTATION_GENES:
@@ -52,6 +48,7 @@ class Genes:
                 new_gen = randint(0, 32)
             self.genes[index] = new_gen
             mutated_indexes.add(index)
+        return self
 
     def clone(self):
         clone = Genes()

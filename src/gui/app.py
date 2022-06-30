@@ -24,7 +24,7 @@ class ShapeWindow(pyglet.window.Window):
     def on_draw(self):
         self.draw_world(self.world)
         self.draw_bots_count(len(self.bot_pool))
-        self.draw_generation(self.bot_pool.generation)
+        self.draw_epochs(self.bot_pool.epoch)
 
     def move(self, *args):
         pass
@@ -49,14 +49,14 @@ class ShapeWindow(pyglet.window.Window):
         if isinstance(cell_type, Bot):
             self.draw_text(cell_type.energy, absolute_x, absolute_y)
 
-    def draw_generation(self, generation):
+    def draw_epochs(self, generation):
         if self.generation_label is None:
-            self.generation_label = pyglet.text.Label("Generation: " + str(generation),
+            self.generation_label = pyglet.text.Label("Epochs: " + str(generation),
                                                       font_name='Roboto',
                                                       font_size=14,
                                                       x=28, y=3)
         else:
-            self.generation_label.text = "Generation: " + str(generation)
+            self.generation_label.text = "Epochs: " + str(generation)
         self.generation_label.draw()
 
     def draw_bots_count(self, bots_count):

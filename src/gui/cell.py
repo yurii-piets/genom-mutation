@@ -9,12 +9,7 @@ def cell_color_by_type(cell_type):
         return 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90
     if isinstance(cell_type, Bot):
         blue = 255
-        shade = 153 - ((cell_type.generation % 51) * 50)
-        if shade <= 0:
-            blue = 255 - (((cell_type.generation % 51) * 50) % 256)
-            shade = 0
-        else:
-            shade %= 154
+        shade = 0
         return shade, shade, blue, shade, shade, blue, shade, shade, blue, shade, shade, blue
     if cell_type == CellType.POISON:
         return 255, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0, 0
