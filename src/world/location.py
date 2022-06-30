@@ -17,6 +17,11 @@ class Location:
     def __repr__(self):
         return "(" + str(self.x) + ", " + str(self.y) + ")"
 
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
+    def __hash__(self):
+        return hash(self.x) + hash(self.y)
 
 def random_location():
     rand_x = randint(0, WORLD_WIDTH - 1)

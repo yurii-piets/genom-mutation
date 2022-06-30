@@ -1,6 +1,7 @@
 from random import randint
 
 from src.bot.genes import Genes
+from src.bot.lookup_memory import LookUpMemory
 from src.const.cell import CellType
 from src.const.direction import rand_direction, get_direction_vector, get_direction
 
@@ -14,6 +15,7 @@ class Bot:
         self.location = location
         self.world = world
         self.created_epoch = created_epoch
+        self.lookup_memory = LookUpMemory()
 
     def execute_commands(self):
         for _ in range(10):
@@ -44,8 +46,11 @@ class Bot:
             self.location = new_location
             self.energy += 11
         elif new_cell == CellType.POISON:
-            self.energy = 0
-            self.world.update_cell(self.location, CellType.POISON)
+            if not self.lookup_memory.contains(new_location):
+                self.energy = 0
+                self.world.update_cell(self.location, CellType.POISON)
+            else:
+                print()
 
     def peek(self, command):
         new_cell, peek_location = self.get_new_cell_from_nell_location(command)
@@ -53,13 +58,11 @@ class Bot:
             self.world.update_cell(peek_location, CellType.EMPTY)
             self.energy += 11
         elif new_cell == CellType.POISON:
-            self.world.update_cell(peek_location, CellType.EMPTY)
-            self.energy += 11
+            self.world.update_cell(peek_location, CellType.FOOD)
 
     def lookup(self, command):
         lookup_cell, lookup_location = self.get_new_cell_from_nell_location(command)
-
-    #     TODO add memory feature
+        self.lookup_memory.put(lookup_location, lookup_cell)
 
     def rotate(self, command):
         self.direction = get_direction(self.direction, command + 1)
