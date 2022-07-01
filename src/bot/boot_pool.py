@@ -3,6 +3,7 @@ from random import randint, sample
 from src.bot.bot import Bot
 from src.const.cell import CellType
 from src.const.config import BOTS_COUNT, MIN_BOTS, BOTS_CLONES
+from src.data.data_exporter import CsvDataExporter
 
 
 class BootPool:
@@ -12,6 +13,7 @@ class BootPool:
         self.bots = create_bots(world)
         self.epoch = 0
         self.ticks = 0
+        self.data_exporter = CsvDataExporter()
 
     def execute_bots_commands(self):
         dead_bots = set()
@@ -25,12 +27,14 @@ class BootPool:
         for bot in dead_bots:
             self.world.update_cell(bot.location, CellType.EMPTY)
             self.bots.remove(bot)
+            self.data_exporter.save_bot_epoch_ticks(self.epoch, bot.ticks)
         self.ticks += 1
 
     def clone_bots(self):
         new_bots = set()
 
         for bot in self.bots:
+            self.data_exporter.save_bot_epoch_ticks(self.epoch, bot.ticks)
             future_energy = randint(40, 80)
             if future_energy > bot.energy:
                 bot.energy = future_energy
@@ -43,6 +47,7 @@ class BootPool:
                 new_bots.add(cloned_bot)
 
         self.bots.update(new_bots)
+        self.data_exporter.save_epoch_ticks(self.epoch, self.ticks)
         self.epoch += 1
         self.ticks = 0
 

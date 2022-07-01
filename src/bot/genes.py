@@ -22,20 +22,11 @@ class Genes:
         self.pointer = move_index % (self.last_index + 1)
 
     def mutate(self):
-        stop = randint(0, self.last_index // 3)
-        if stop > MAX_MUTATION_GENES:
-            stop = MAX_MUTATION_GENES
-        mutated_indexes = set()
-        while stop > 0:
-            stop -= 1
-            index = randint(0, self.last_index)
-            while index in mutated_indexes:
-                index = randint(0, self.last_index)
-            new_gen = randint(0, 32)
-            while self.genes[index] == new_gen:
-                new_gen = randint(0, 32)
-            self.genes[index] = new_gen
-            mutated_indexes.add(index)
+        indexes_to_mutate = set()
+        while len(indexes_to_mutate) < MAX_MUTATION_GENES:
+            indexes_to_mutate.add(randint(0, MAX_GENES_COUNT - 1))
+        for index in indexes_to_mutate:
+            self.genes[index] = randint(0, HIGHEST_GENE)
         return self
 
     def clone(self):
