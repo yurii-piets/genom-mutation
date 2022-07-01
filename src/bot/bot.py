@@ -16,6 +16,7 @@ class Bot:
         self.world = world
         self.created_epoch = created_epoch
         self.lookup_memory = LookUpMemory()
+        self.ticks = 0
 
     def execute_commands(self):
         for _ in range(10):
@@ -33,6 +34,7 @@ class Bot:
             else:
                 self.genes.shift_pointer(current_command)
         self.energy -= 1
+        self.ticks += 1
 
     def move(self, command):
         new_cell, new_location = self.get_new_cell_from_nell_location(command)
@@ -49,8 +51,6 @@ class Bot:
             if not self.lookup_memory.contains(new_location):
                 self.energy = 0
                 self.world.update_cell(self.location, CellType.POISON)
-            else:
-                print()
 
     def peek(self, command):
         new_cell, peek_location = self.get_new_cell_from_nell_location(command)
@@ -80,9 +80,6 @@ class Bot:
         clone = Bot(None, self.world)
         clone.genes = self.genes.clone().mutate()
         return clone
-
-    def mutate(self):
-        self.genes.mutate()
 
 
 def is_move_command(command):
