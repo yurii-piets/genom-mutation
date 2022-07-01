@@ -35,9 +35,8 @@ class BootPool:
 
         for bot in self.bots:
             self.data_exporter.save_bot_epoch_ticks(self.epoch, bot.ticks)
-            future_energy = randint(40, 80)
-            if future_energy > bot.energy:
-                bot.energy = future_energy
+            if bot.energy < 90:
+                bot.energy = 90
             for i in range(BOTS_CLONES):
                 cloned_bot = bot.clone()
                 cloned_bot.created_epoch = self.epoch

@@ -1,7 +1,6 @@
 from random import randint
 
 from src.bot.genes import Genes
-from src.bot.lookup_memory import LookUpMemory
 from src.const.cell import CellType
 from src.const.direction import rand_direction, get_direction_vector, get_direction
 
@@ -9,26 +8,28 @@ from src.const.direction import rand_direction, get_direction_vector, get_direct
 class Bot:
 
     def __init__(self, location, world, created_epoch=0):
-        self.energy = randint(50, 90)
+        self.energy = 90
         self.direction = rand_direction()
         self.genes = Genes()
         self.location = location
         self.world = world
         self.created_epoch = created_epoch
-        self.lookup_memory = LookUpMemory()
         self.ticks = 0
 
     def execute_commands(self):
         for _ in range(10):
             current_command = self.genes.get_next()
             if is_move_command(current_command):
-                self.move(current_command)
+                new_cell = self.move(current_command)
+                self.move_pointer_based_on_cell_type(new_cell)
                 break
             elif is_peek_command(current_command):
-                self.peek(current_command % 8)
+                new_cell = self.peek(current_command % 8)
+                self.move_pointer_based_on_cell_type(new_cell)
                 break
             elif is_lookup_command(current_command):
-                self.lookup(current_command % 16)
+                new_cell = self.lookup(current_command % 16)
+                self.move_pointer_based_on_cell_type(new_cell)
             elif is_rotate_command(current_command):
                 self.rotate(current_command % 24)
             else:
@@ -48,9 +49,9 @@ class Bot:
             self.location = new_location
             self.energy += 11
         elif new_cell == CellType.POISON:
-            if not self.lookup_memory.contains(new_location):
-                self.energy = 0
-                self.world.update_cell(self.location, CellType.POISON)
+            self.energy = 0
+            self.world.update_cell(self.location, CellType.POISON)
+        return new_cell
 
     def peek(self, command):
         new_cell, peek_location = self.get_new_cell_from_nell_location(command)
@@ -59,10 +60,11 @@ class Bot:
             self.energy += 11
         elif new_cell == CellType.POISON:
             self.world.update_cell(peek_location, CellType.FOOD)
+        return new_cell
 
     def lookup(self, command):
-        lookup_cell, lookup_location = self.get_new_cell_from_nell_location(command)
-        self.lookup_memory.put(lookup_location, lookup_cell)
+        lookup_cell, _ = self.get_new_cell_from_nell_location(command)
+        return lookup_cell
 
     def rotate(self, command):
         self.direction = get_direction(self.direction, command + 1)
@@ -80,6 +82,18 @@ class Bot:
         clone = Bot(None, self.world)
         clone.genes = self.genes.clone().mutate()
         return clone
+
+    def move_pointer_based_on_cell_type(self, cell_type):
+        if cell_type == CellType.POISON:
+            self.genes.move_pointer(1)
+        elif cell_type == CellType.WALL:
+            self.genes.move_pointer(2)
+        elif cell_type == CellType.BOT or isinstance(cell_type, Bot):
+            self.genes.move_pointer(3)
+        elif cell_type == CellType.FOOD:
+            self.genes.move_pointer(4)
+        elif cell_type == CellType.EMPTY:
+            self.genes.move_pointer(5)
 
 
 def is_move_command(command):
