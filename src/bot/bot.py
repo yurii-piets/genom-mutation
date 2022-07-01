@@ -1,14 +1,13 @@
-from random import randint
-
 from src.bot.genes import Genes
 from src.const.cell import CellType
+from src.const.config import ENERGY
 from src.const.direction import rand_direction, get_direction_vector, get_direction
 
 
 class Bot:
 
     def __init__(self, location, world, created_epoch=0):
-        self.energy = 90
+        self.energy = ENERGY
         self.direction = rand_direction()
         self.genes = Genes()
         self.location = location
@@ -85,15 +84,15 @@ class Bot:
 
     def move_pointer_based_on_cell_type(self, cell_type):
         if cell_type == CellType.POISON:
-            self.genes.move_pointer(1)
+            self.genes.shift_pointer(1)
         elif cell_type == CellType.WALL:
-            self.genes.move_pointer(2)
+            self.genes.shift_pointer(2)
         elif cell_type == CellType.BOT or isinstance(cell_type, Bot):
-            self.genes.move_pointer(3)
+            self.genes.shift_pointer(3)
         elif cell_type == CellType.FOOD:
-            self.genes.move_pointer(4)
+            self.genes.shift_pointer(4)
         elif cell_type == CellType.EMPTY:
-            self.genes.move_pointer(5)
+            self.genes.shift_pointer(5)
 
 
 def is_move_command(command):

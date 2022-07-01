@@ -85,5 +85,5 @@ class ShapeWindow(pyglet.window.Window):
 
 shape_window = ShapeWindow()
 _thread.start_new_thread(run, (shape_window.world, shape_window.bot_pool,))
-pyglet.clock.schedule_interval(shape_window.move, 0.3)
+pyglet.clock.schedule_interval(shape_window.move, 1.0/60.0)
 pyglet.app.run()

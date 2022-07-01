@@ -18,9 +18,6 @@ class Genes:
     def shift_pointer(self, shift_index):
         self.pointer = (shift_index + self.pointer) % (self.last_index + 1)
 
-    def move_pointer(self, move_index):
-        self.pointer = move_index % (self.last_index + 1)
-
     def mutate(self):
         indexes_to_mutate = set()
         while len(indexes_to_mutate) < MAX_MUTATION_GENES:

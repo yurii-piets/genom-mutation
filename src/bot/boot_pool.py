@@ -1,8 +1,8 @@
-from random import randint, sample
+from random import shuffle
 
 from src.bot.bot import Bot
 from src.const.cell import CellType
-from src.const.config import BOTS_COUNT, MIN_BOTS, BOTS_CLONES
+from src.const.config import BOTS_COUNT, MIN_BOTS, BOTS_CLONES, ENERGY
 from src.data.data_exporter import CsvDataExporter
 
 
@@ -17,8 +17,10 @@ class BootPool:
 
     def execute_bots_commands(self):
         dead_bots = set()
-        for bot in self.bots:
-            if BOTS_COUNT - len(dead_bots) <= MIN_BOTS:
+        bots_as_list = list(self.bots)
+        shuffle(bots_as_list)
+        for bot in bots_as_list:
+            if len(self.bots) - len(dead_bots) <= MIN_BOTS:
                 break
             bot.execute_commands()
             if not bot.is_alive():
@@ -35,8 +37,8 @@ class BootPool:
 
         for bot in self.bots:
             self.data_exporter.save_bot_epoch_ticks(self.epoch, bot.ticks)
-            if bot.energy < 90:
-                bot.energy = 90
+            if bot.energy < ENERGY:
+                bot.energy = ENERGY
             for i in range(BOTS_CLONES):
                 cloned_bot = bot.clone()
                 cloned_bot.created_epoch = self.epoch
