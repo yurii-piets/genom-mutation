@@ -49,6 +49,7 @@ class BootPool:
 
         self.bots.update(new_bots)
         self.data_exporter.save_epoch_ticks(self.epoch, self.ticks)
+        self.data_exporter.save_epoch_food_poison(self.epoch, self.world.food_amount(), self.world.poison_amount())
         self.epoch += 1
         self.ticks = 0
 

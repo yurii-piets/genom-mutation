@@ -15,7 +15,7 @@ def run(world, bot_pool):
             bot_pool.clone_bots()
             world.fill_food()
             world.fill_poison()
-        time.sleep(SLEEP_BETWEEN_STEPS)
+        # time.sleep(SLEEP_BETWEEN_STEPS)
 
 
 if __name__ == '__main__':
