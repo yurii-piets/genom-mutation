@@ -1,27 +1,30 @@
-from abc import abstractmethod
+import os
 
-FILE_EPOCH_TICKS = "../data/epoch_ticks.csv"
-FILE_BOT_EPOCH_TICKS = "../data/bot_epoch_ticks.csv"
-FILE_EPOCH_FOOD_POISON = "../data/epoch_food_poison.csv"
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from src.data.bot_epoch_ticks_entity import BotEpochTicksEntity
+from src.data.config import Base
+from src.data.epoch_food_poison_entity import EpochFoodPoisonEntity
+from src.data.epoch_ticks_entity import EpochTicksEntity
 
 
-class CsvDataExporter:
+class PsqlDataExporter:
     def __init__(self):
-        with open(FILE_EPOCH_TICKS, 'w') as file:
-            file.write('')
-        with open(FILE_BOT_EPOCH_TICKS, 'w') as file:
-            file.write('')
-        with open(FILE_EPOCH_FOOD_POISON, 'w') as file:
-            file.write('')
+        engine = create_engine(
+            'postgresql://gn_usr:' + os.getenv('GENOM_MUTATION_PASSWORD') + '@localhost:5432/genom_mutation')
+        Session = sessionmaker(bind=engine)
+        self.session = Session()
+        Base.metadata.create_all(engine)
 
     def save_epoch_ticks(self, epoch, ticks):
-        with open(FILE_EPOCH_TICKS, 'a') as file:
-            file.write(str(epoch) + ';' + str(ticks) + '\n')
+        self.session.add(EpochTicksEntity(epoch=epoch, ticks=ticks))
+        self.session.commit()
 
     def save_bot_epoch_ticks(self, epoch, ticks):
-        with open(FILE_BOT_EPOCH_TICKS, 'a') as file:
-            file.write(str(epoch) + ';' + str(ticks) + '\n')
+        self.session.add(BotEpochTicksEntity(epoch=epoch, ticks=ticks))
+        self.session.commit()
 
-    def save_epoch_food_poison(self, epoch, food_amount, poison_amount):
-        with open(FILE_EPOCH_FOOD_POISON, 'a') as file:
-            file.write(str(epoch) + ';' + str(food_amount) + ';' + str(poison_amount) + '\n')
+    def save_epoch_food_poison(self, epoch, food_count, poison_count):
+        self.session.add(EpochFoodPoisonEntity(epoch=epoch, food_count=food_count, poison_count=poison_count))
+        self.session.commit()

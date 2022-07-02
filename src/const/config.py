@@ -16,6 +16,8 @@ WORLD_HEIGHT = 33
 # max values properties
 MAX_FOOD = 250
 MAX_POISON = 100
+MIN_FOOD = 50
+MIN_POISON = 60
 
 # Window properties
 MAX_X = 1780

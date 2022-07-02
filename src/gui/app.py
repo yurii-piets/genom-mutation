@@ -6,7 +6,7 @@ from src.bot.boot_pool import BootPool
 from src.bot.bot import Bot
 from src.const.config import MAX_Y, MAX_X, DEFAULT_SIZE, MARGIN
 from src.gui.cell import cell_color_by_type
-from src.runner import run
+from src.runner import run, Profile
 from src.world.location import Location
 from src.world.world import World, WORLD_HEIGHT, WORLD_WIDTH
 
@@ -84,6 +84,6 @@ class ShapeWindow(pyglet.window.Window):
 
 
 shape_window = ShapeWindow()
-_thread.start_new_thread(run, (shape_window.world, shape_window.bot_pool,))
+_thread.start_new_thread(run, (shape_window.world, shape_window.bot_pool, Profile.UI))
 pyglet.clock.schedule_interval(shape_window.move, 1.0/60.0)
 pyglet.app.run()

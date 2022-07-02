@@ -3,7 +3,7 @@ from random import shuffle
 from src.bot.bot import Bot
 from src.const.cell import CellType
 from src.const.config import BOTS_COUNT, MIN_BOTS, BOTS_CLONES, ENERGY
-from src.data.data_exporter import CsvDataExporter
+from src.data.data_exporter import CsvDataExporter, PsqlDataExporter
 
 
 class BootPool:
@@ -13,7 +13,7 @@ class BootPool:
         self.bots = create_bots(world)
         self.epoch = 0
         self.ticks = 0
-        self.data_exporter = CsvDataExporter()
+        self.data_exporter = PsqlDataExporter()
 
     def execute_bots_commands(self):
         dead_bots = set()
