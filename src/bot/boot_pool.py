@@ -3,7 +3,7 @@ from random import shuffle
 from src.bot.bot import Bot
 from src.const.cell import CellType
 from src.const.config import BOTS_COUNT, MIN_BOTS, BOTS_CLONES, ENERGY
-from src.data.data_exporter import CsvDataExporter, PsqlDataExporter
+from src.data.data_exporter import PsqlDataExporter
 
 
 class BootPool:
@@ -20,6 +20,7 @@ class BootPool:
         bots_as_list = list(self.bots)
         shuffle(bots_as_list)
         for bot in bots_as_list:
+            bot.id = self.data_exporter.save_bot(bot)
             if len(self.bots) - len(dead_bots) <= MIN_BOTS:
                 break
             bot.execute_commands()
@@ -29,6 +30,8 @@ class BootPool:
         for bot in dead_bots:
             self.world.update_cell(bot.location, CellType.EMPTY)
             self.bots.remove(bot)
+            bot.drop_epoch = self.epoch
+            self.data_exporter.update_bot(bot)
             self.data_exporter.save_bot_epoch_ticks(self.epoch, bot.ticks)
         self.ticks += 1
 

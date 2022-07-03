@@ -1,6 +1,6 @@
 from src.bot.genes import Genes
 from src.const.cell import CellType
-from src.const.config import ENERGY
+from src.const.config import ENERGY, MAX_ENERGY
 from src.const.direction import rand_direction, get_direction_vector, get_direction
 
 
@@ -35,6 +35,8 @@ class Bot:
                 self.genes.shift_pointer(current_command)
         self.energy -= 1
         self.ticks += 1
+        if self.energy > MAX_ENERGY:
+            self.energy = MAX_ENERGY
 
     def move(self, command):
         new_cell, new_location = self.get_new_cell_from_nell_location(command)
